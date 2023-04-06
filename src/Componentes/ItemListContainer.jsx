@@ -1,21 +1,39 @@
+import react, {useState, useEffect} from "react";
 import React from "react";
 import Item from "./Item";
-import Flex from "./Flex";
-import products from "./products";
+/*-----------------------------------------------*/
+import productsDatabase from "./products";
+
+function getItems(){
+    const promesa = new Promise((resolve) => {
+        setTimeout(()=> {
+            resolve (productsDatabase);
+        } , 2500);
+        });
+
+        return promesa;
+    }
+
 
 
 function ItemListContainer(){
     /* Let products = []; */
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]);
 
-    getItems().then((respuesta) => {
-        console.log("promesa cumplida" , respuesta);
-        setProducts(respuesta)
-    });
+    useEffect(
+        () => {
+        getItems().then((respuesta) => {
+            console.log("promesa cumplida" , respuesta);
+            setProducts(respuesta);
+        });
+    },
+    []
+        )
+    
 
     return(
-     <Flex>
-    {products.map((producto) => (
+         
+    products.map((producto) => (
         <Item
             key={producto.id}
             id={producto.id}
@@ -24,8 +42,8 @@ function ItemListContainer(){
             category={producto.category}
             img={producto.img}
         />
-    ))}
-     </Flex>
+    ))
+  
 );
 }
 
